@@ -1,4 +1,3 @@
-# helm install controlplane kong/kong --namespace kong --values ./controlplane.yml --set ingressController.installCRDs=false
 namespace: kong
 replicaCount: 1
 image:
