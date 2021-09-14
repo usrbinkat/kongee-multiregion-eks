@@ -96,13 +96,13 @@ kubectl create secret generic kong-postgres-credentials -n kong --dry-run=client
 ```
 
 ```sh
-helm install dataplane    kong/kong --namespace kong --values ./kongee/dataplane-primary.yml    --set ingressController.installCRDs=false --kube-context blue
-helm install controlplane kong/kong --namespace kong --values ./kongee/controlplane-primary.yml --set ingressController.installCRDs=false --kube-context blue
+helm install dataplane    kong/kong --namespace kong --values ./kongee/dataplane.yml    --set ingressController.installCRDs=false --kube-context blue
+helm install controlplane kong/kong --namespace kong --values ./kongee/controlplane.yml --set ingressController.installCRDs=false --kube-context blue
 ```
 
 ```sh
-helm install dataplane    kong/kong --namespace kong --values ./kongee/dataplane-primary.yml    --set ingressController.installCRDs=false --kube-context green
-helm install controlplane kong/kong --namespace kong --values ./kongee/controlplane-primary.yml --set ingressController.installCRDs=false --kube-context green
+helm install dataplane    kong/kong --namespace kong --values ./kongee/dataplane.yml    --set ingressController.installCRDs=false --kube-context green
+helm install controlplane kong/kong --namespace kong --values ./kongee/controlplane.yml --set ingressController.installCRDs=false --kube-context green
 ```
 
 ```sh
