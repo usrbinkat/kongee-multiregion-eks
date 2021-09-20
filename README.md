@@ -21,8 +21,8 @@ kubectl create namespace cert-manager --dry-run=client -oyaml | kubectl apply -f
 
 ### 3. CertManager (optional)
 ```sh
-helm --kube-context blue  upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --set installCRDs=true --values ./cert-manager/helm-jetstack-certmanager-values.yml
-helm --kube-context green upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --set installCRDs=true --values ./cert-manager/helm-jetstack-certmanager-values.yml
+helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --set installCRDs=true --values ./cert-manager/helm-jetstack-certmanager-values.yml --kube-context blue
+helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --set installCRDs=true --values ./cert-manager/helm-jetstack-certmanager-values.yml --kube-context green
 ```
 
 ### 4. CertManager (optional)
