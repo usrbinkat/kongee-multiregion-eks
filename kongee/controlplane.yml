@@ -82,9 +82,9 @@ env:
   lua_ssl_trusted_certificate: /etc/ssl/certs/ca-certificates.crt 
 
   vitals: on
-  admin_gui_protocol: http
-  admin_gui_url: "http://kong-controlplane-manager-gui-fac0c25bce3a59d7.elb.us-east-1.amazonaws.com:8002"
-  admin_api_uri: "http://kong-controlplane-admin-api-605799a69c355bfb.elb.us-east-1.amazonaws.com:8001"
+  admin_gui_protocol: https
+  admin_gui_url: "https://manager.kong.hbfs.io:8445"
+  admin_api_uri: "https://admin.kong.hbfs.io:8444"
   admin_ssl_cert: /etc/secrets/kong-tls/tls.crt
   admin_ssl_cert_key: /etc/secrets/kong-tls/tls.key
   admin_gui_ssl_cert: /etc/secrets/kong-tls/tls.crt
@@ -195,11 +195,13 @@ admin:
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
     service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
   tls:
+    servicePort: 8444
+    containerPort: 8444
     enabled: true
     parameters:
     - http2
   http:
-    enabled: true
+    enabled: false
   ingress:
     enabled: false
     path: /api
@@ -221,12 +223,14 @@ manager:
     service.beta.kubernetes.io/aws-load-balancer-type: "external"
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
     service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
-  http:
-    enabled: true
   tls:
     enabled: true
+    containerPort: 8445
+    servicePort: 8445
     parameters:
     - http2
+  http:
+    enabled: false
   ingress:
     enabled: false
     hostname: ""
