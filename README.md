@@ -2,8 +2,10 @@ Find official docs here: [Kong EE Gateway Install](https://docs.konghq.com/enter
 
 ### 0. test connectivity
 ```sh
-psql -d "postgresql://kong:kong@192.168.1.67:5432/kong" -c "select now()"
-psql -d "postgresql://kong:kong@192.168.1.68:5432/kong" -c "select now()"
+kubectl run pgsql-postgresql-client -i --rm \
+    --tty --restart='Never' --namespace kong \
+    --image docker.io/bitnami/postgresql --  \
+  psql -d "postgresql://kong:kong@10.100.36.49:5432/kong" -c "select now()"
 ```
 
 ### 1. add helm repos
