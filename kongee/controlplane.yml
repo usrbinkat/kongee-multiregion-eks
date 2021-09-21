@@ -201,7 +201,7 @@ admin:
   ingress:
     enabled: false
     path: /api
-    hostname: a01a07367b87d43dbb34759a35e47884-0c3e5cc22f034f71.elb.us-east-1.amazonaws.com
+    hostname: ""
     tls: kong-tls
     annotations: {}
 
@@ -224,7 +224,7 @@ manager:
     - http2
   ingress:
     enabled: false
-    hostname:  174254b8e5d24f96885d4ab2be3f1bf-ec1b763ed592998c.elb.us-east-1.amazonaws.com
+    hostname: ""
     annotations: {}
     tls: kong-tls
     path: /
