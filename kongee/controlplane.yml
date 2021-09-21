@@ -83,9 +83,8 @@ env:
 
   vitals: on
   admin_gui_protocol: http
-  admin_gui_host: "a174254b8e5d24f96885d4ab2be3f1bf-ec1b763ed592998c.elb.us-east-1.amazonaws.com"
-  admin_gui_url: "http://a174254b8e5d24f96885d4ab2be3f1bf-ec1b763ed592998c.elb.us-east-1.amazonaws.com:8002"
-  admin_api_uri: "http://a01a07367b87d43dbb34759a35e47884-0c3e5cc22f034f71.elb.us-east-1.amazonaws.com:8001"
+  admin_gui_url: "http://kong-controlplane-manager-gui-fac0c25bce3a59d7.elb.us-east-1.amazonaws.com:8002"
+  admin_api_uri: "http://kong-controlplane-admin-api-605799a69c355bfb.elb.us-east-1.amazonaws.com:8001"
   admin_ssl_cert: /etc/secrets/kong-tls/tls.crt
   admin_ssl_cert_key: /etc/secrets/kong-tls/tls.key
   admin_gui_ssl_cert: /etc/secrets/kong-tls/tls.crt
@@ -192,6 +191,9 @@ admin:
     service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: "*"
     service.beta.kubernetes.io/aws-load-balancer-internal: "true"
     service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    service.beta.kubernetes.io/aws-load-balancer-type: "external"
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
   tls:
     enabled: true
     parameters:
@@ -216,6 +218,9 @@ manager:
     service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: "*"
     service.beta.kubernetes.io/aws-load-balancer-internal: "true"
     service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    service.beta.kubernetes.io/aws-load-balancer-type: "external"
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
   http:
     enabled: true
   tls:
