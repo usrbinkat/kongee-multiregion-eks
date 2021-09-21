@@ -11,8 +11,8 @@ spec:
   - "portal.kongeelabs.home.arpa"
   - "manager.kongeelabs.home.arpa"
   - "*.kongeelabs.home.arpa"
-  - "a29948c58d0e0404190565a02f30cb8d-ae08b15f09445686.elb.us-east-1.amazonaws.com"
-  - "a3a97e5a46ff54ac2a18210e7f30faf3-4a41aa396b5a5a18.elb.us-east-1.amazonaws.com"
+  - a01a07367b87d43dbb34759a35e47884-0c3e5cc22f034f71.elb.us-east-1.amazonaws.com
+  - a174254b8e5d24f96885d4ab2be3f1bf-ec1b763ed592998c.elb.us-east-1.amazonaws.com
   renewBefore: 360h
   duration: 2160h
   isCA: false
