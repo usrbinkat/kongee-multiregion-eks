@@ -21,8 +21,8 @@ kubectl create namespace cert-manager --dry-run=client -oyaml | kubectl apply -f
 
 ### 3. CertManager (optional)
 ```sh
-helm --kube-context blue  install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --set installCRDs=true --values ./cert-manager/helm-jetstack-certmanager-values.yml
-helm --kube-context green install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --set installCRDs=true --values ./cert-manager/helm-jetstack-certmanager-values.yml
+helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --set installCRDs=true --values ./cert-manager/helm-jetstack-certmanager-values.yml --kube-context blue
+helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --set installCRDs=true --values ./cert-manager/helm-jetstack-certmanager-values.yml --kube-context green
 ```
 
 ### 4. CertManager (optional)
@@ -105,13 +105,13 @@ kubectl create secret generic kong-postgres-credentials -n kong --dry-run=client
 ### 12. Deploy Dataplane and Controlplane
   - deploy to first cluster
 ```sh
-helm install dataplane    kong/kong --namespace kong --values ./kongee/dataplane.yml    --set ingressController.installCRDs=false --kube-context blue
-helm install controlplane kong/kong --namespace kong --values ./kongee/controlplane.yml --set ingressController.installCRDs=false --kube-context blue
+helm upgrade --install dataplane    kong/kong --namespace kong --values ./kongee/dataplane.yml    --set ingressController.installCRDs=false --kube-context blue
+helm upgrade --install controlplane kong/kong --namespace kong --values ./kongee/controlplane.yml --set ingressController.installCRDs=false --kube-context blue
 ```
   - deploy to second cluster
 ```sh
-helm install dataplane    kong/kong --namespace kong --values ./kongee/dataplane.yml    --set ingressController.installCRDs=false --kube-context green
-helm install controlplane kong/kong --namespace kong --values ./kongee/controlplane.yml --set ingressController.installCRDs=false --kube-context green
+helm upgrade --install dataplane    kong/kong --namespace kong --values ./kongee/dataplane.yml    --set ingressController.installCRDs=false --kube-context green
+helm upgrade --install controlplane kong/kong --namespace kong --values ./kongee/controlplane.yml --set ingressController.installCRDs=false --kube-context green
 ```
 
 ### 13. review services and ingresses (where applicable)

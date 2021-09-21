@@ -3,7 +3,7 @@
 namespace: kong
 replicaCount: 1
 image:
-  repository: kong/kong-gateway
+  repository: docker.io/kong/kong-gateway
   tag: "2.5"
 deployment:
   kong:
