@@ -1,18 +1,16 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: kongeelabs.home.arpa
+  name: kong.hbfs.io
   namespace: kong
 spec:
   secretName: kong-tls
-  commonName: kongeelabs.home.arpa
+  commonName: kong.hbfs.io
   dnsNames:
-  - "kongeelabs.home.arpa"
-  - "portal.kongeelabs.home.arpa"
-  - "manager.kongeelabs.home.arpa"
-  - "*.kongeelabs.home.arpa"
-  - a01a07367b87d43dbb34759a35e47884-0c3e5cc22f034f71.elb.us-east-1.amazonaws.com
-  - a174254b8e5d24f96885d4ab2be3f1bf-ec1b763ed592998c.elb.us-east-1.amazonaws.com
+  - "kong.hbfs.io"
+  - "admin.kong.hbfs.io"
+  - "manager.kong.hbfs.io"
+  - "*.kong.hbfs.io"
   renewBefore: 360h
   duration: 2160h
   isCA: false
