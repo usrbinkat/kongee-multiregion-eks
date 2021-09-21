@@ -5,7 +5,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 global:
-  storageClass: "ceph-block"
+# storageClass: "ceph-block"
   postgresql:
     servicePort: "5432"
     postgresqlDatabase: "kong"
@@ -51,9 +51,9 @@ postgresqlPassword: "postgres_password"
 postgresqlPostgresPassword: "postgres_admin_password"
 
 service:
-  type: LoadBalancer
+  type: ClusterIP
+ #type: LoadBalancer
   port: 5432
-  loadBalancerIP: ""
   annotations: {}
 
 shmVolume:
@@ -65,7 +65,7 @@ shmVolume:
 persistence:
   enabled: true
   size: 8Gi
-  storageClass: "ceph-block"
+# storageClass: "ceph-block"
   mountPath: /bitnami/postgresql
   existingClaim: ""
   annotations: {}
@@ -80,13 +80,14 @@ primary:
   annotations: {}
   podAntiAffinityPreset: soft
   service:
-    type: "LoadBalancer"
+    type: "ClusterIP"
+   #type: "LoadBalancer"
 
 readReplicas:
   annotations: {}
   podAntiAffinityPreset: soft
   service:
-    type: "LoadBalancer"
+    type: "ClusterIP"
   persistence:
     enabled: true
 

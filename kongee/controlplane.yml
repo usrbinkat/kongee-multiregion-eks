@@ -1,3 +1,5 @@
+# https://github.com/kubernetes-sigs/aws-load-balancer-controller/blob/main/docs/guide/service/annotations.md
+# https://gist.github.com/mgoodness/1a2926f3b02d8e8149c224d25cc57dc1
 namespace: kong
 replicaCount: 1
 image:
@@ -80,10 +82,10 @@ env:
   lua_ssl_trusted_certificate: /etc/ssl/certs/ca-certificates.crt 
 
   vitals: on
-  admin_gui_protocol: https
-  admin_gui_url: "https://manager.kongeelabs.home.arpa/"
-  admin_api_uri: "https://manager.kongeelabs.home.arpa/api"
-  admin_gui_host: "manager.kongeelabs.home.arpa"
+  admin_gui_protocol: http
+  admin_gui_host: "a01a07367b87d43dbb34759a35e47884-0c3e5cc22f034f71.elb.us-east-1.amazonaws.com"
+  admin_gui_url: "http://a01a07367b87d43dbb34759a35e47884-0c3e5cc22f034f71.elb.us-east-1.amazonaws.com:8001"
+  admin_api_uri: "http://a174254b8e5d24f96885d4ab2be3f1bf-ec1b763ed592998c.elb.us-east-1.amazonaws.com:8002"
   admin_ssl_cert: /etc/secrets/kong-tls/tls.crt
   admin_ssl_cert_key: /etc/secrets/kong-tls/tls.key
   admin_gui_ssl_cert: /etc/secrets/kong-tls/tls.crt
@@ -96,9 +98,9 @@ env:
   portal: on
   portal_cors_origins: "*"
   portal_gui_protocol: https
-  portal_gui_url: "https://portal.kongeelabs.home.arpa/"
-  portal_api_uri: "https://portal.kongeelabs.home.arpa/api"
-  portal_gui_host: "portal.kongeelabs.home.arpa"
+  portal_gui_url: "https://portal.kong.hbfs.io/"
+  portal_api_uri: "https://portal.kong.hbfs.io/api"
+  portal_gui_host: "portal.kong.hbfs.io"
   portal_gui_access_log: /dev/stdout
   portal_api_access_log: /dev/stdout
   portal_gui_error_log: /dev/stdout
@@ -140,7 +142,6 @@ enterprise:
   portal:
     enabled: true
   rbac:
-    # TODO: enable rbac
     enabled: true
     admin_gui_auth: basic-auth
     session_conf_secret: kong-session-config
@@ -182,27 +183,51 @@ migrations:
 
 admin:
   enabled: true
-  type: ClusterIP 
+  type: LoadBalancer
   annotations:
-    konghq.com/protocol: "https"
-  ingress:
-    enabled: true
-    path: /api
-    hostname: manager.kongeelabs.home.arpa
-    tls: kong-tls
-    annotations:
-      konghq.com/protocols: "https"
-      konghq.com/strip-path: "true"
-      kubernetes.io/ingress.class: "kong"
-      konghq.com/https-redirect-status-code: "301"
-  http:
-    enabled: false
+    service.beta.kubernetes.io/aws-load-balancer-name: "kong-controlplane-admin-api"
+    service.beta.kubernetes.io/aws-load-balancer-subnets: "subnet-0a4c44c677c2ea74c,subnet-07579767f7d37f425"
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+    service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: "*"
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
   tls:
-    enabled: true
-    servicePort: 8444
-    containerPort: 8444
+    enabled: false
     parameters:
     - http2
+  http:
+    enabled: true
+  ingress:
+    enabled: false
+    path: /api
+    hostname: a01a07367b87d43dbb34759a35e47884-0c3e5cc22f034f71.elb.us-east-1.amazonaws.com
+    tls: kong-tls
+    annotations: {}
+
+manager:
+  enabled: true
+  type: LoadBalancer
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-name: "kong-controlplane-manager-gui"
+    service.beta.kubernetes.io/aws-load-balancer-subnets: "subnet-0a4c44c677c2ea74c,subnet-07579767f7d37f425"
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+    service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: "*"
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+  http:
+    enabled: true
+  tls:
+    enabled: false
+    parameters:
+    - http2
+  ingress:
+    enabled: false
+    hostname: a01a07367b87d43dbb34759a35e47884-0c3e5cc22f034f71.elb.us-east-1.amazonaws.com
+    annotations: {}
+    tls: kong-tls
+    path: /
 
 portalapi:
   enabled: true
@@ -212,7 +237,7 @@ portalapi:
   ingress:
     enabled: true
     path: /api
-    hostname: portal.kongeelabs.home.arpa
+    hostname: portal.kong.hbfs.io
     tls: kong-tls
     annotations:
       konghq.com/protocols: "https"
@@ -228,32 +253,6 @@ portalapi:
     parameters:
     - http2
 
-manager:
-  enabled: true
-  type: ClusterIP
-  annotations:
-    konghq.com/protocol: "https"
-  ingress:
-    enabled: true
-    path: /
-    hostname: manager.kongeelabs.home.arpa
-    tls: kong-tls
-    annotations:
-      konghq.com/protocols: "https"
-      kubernetes.io/ingress.class: "kong"
-      konghq.com/https-redirect-status-code: "301"
-      konghq.com/strip-path: "false"
-  http:
-    enabled: false
-    servicePort: 8002
-    containerPort: 8002
-  tls:
-    enabled: true
-    servicePort: 8445
-    containerPort: 8445
-    parameters:
-    - http2
-
 portal:
   enabled: true
   type: ClusterIP
@@ -262,7 +261,7 @@ portal:
   ingress:
     enabled: true
     path: /
-    hostname: portal.kongeelabs.home.arpa
+    hostname: portal.kong.hbfs.io
     tls: kong-tls
     annotations:
       konghq.com/protocols: "https"
